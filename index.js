@@ -3,6 +3,7 @@ const { connectDB } = require("./utils/db");
 const userRoute = require("./routes/user");
 const authRoute = require("./routes/auth");
 const productRoute = require("./routes/product");
+
 const app = express();
 const dotenv = require("dotenv");
 dotenv.config();
