@@ -1,16 +1,20 @@
 const Product = require("../models/Product");
-const {  verifyTokenAndAuth, verifyTokenAndAdmin } = require("./verifyToken");
+const { verifyTokenAndAuth, verifyTokenAndAdmin } = require("./verifyToken");
 
-const router=require("express").Router();
-router.post("/",verifyTokenAndAdmin,async(req,res)=>{
-    const newProduct=new Product(req.body);
-    try{
-        const saveProduct=await newProduct.save();
-        res.status(200).json(saveProduct);
-    }catch(err){
-        return res.status(500).json(err);
-    }
-})
+const router = require("express").Router();
+
+router.post("/", verifyTokenAndAdmin, async (req, res) => {
+  const newProduct = new Product(req.body);
+  if (!req.body) {
+    return res.status(400).send("Please provide all the fields");
+  }
+  try {
+    const saveProduct = await newProduct.save();
+    return res.status(200).json(saveProduct);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 
 // router.put("/:id",verifyTokenAndAuth,async(req,res)=>{
 //     try{
@@ -45,7 +49,7 @@ router.post("/",verifyTokenAndAdmin,async(req,res)=>{
 //         const user=await User.findById(req.params.id);
 //         const {password,...others}=user._doc;
 //         res.status(200).json(others);
-       
+
 //     }catch(err){
 //         return res.status(500).json(err)
 //     }
@@ -56,7 +60,7 @@ router.post("/",verifyTokenAndAdmin,async(req,res)=>{
 //     try{
 //         const users=query?await User.find().sort({_id:-1}).limit(5):await User.find();
 //         res.status(200).json(users);
-       
+
 //     }catch(err){
 //         return res.status(500).json(err)
 //     }
@@ -86,4 +90,4 @@ router.post("/",verifyTokenAndAdmin,async(req,res)=>{
 //     }
 //})
 
-module.exports=router;
+module.exports = router;
